@@ -1,215 +1,153 @@
-<div align="center">
+# 📝 BlogSphere
 
-<!-- Animated Header -->
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:00D9FF,100:7C3AED&height=200&section=header&text=Ayush%20Srivastava&fontSize=70&fontColor=ffffff&animation=fadeIn&fontAlignY=38&desc=Full-Stack%20Developer%20%7C%20Building%20Modern%20Web%20Experiences&descAlignY=58&descSize=18" width="100%"/>
+### ✨ Write. Share. Connect.
 
-<!-- Typing Animation -->
-<a href="https://ayushsri.netlify.app">
-  <img src="https://readme-typing-svg.demolab.com?font=Space+Grotesk&weight=600&size=26&duration=3000&pause=1000&color=00D9FF&center=true&vCenter=true&width=700&lines=Hi+there!+%F0%9F%91%8B+I'm+Ayush;Full-Stack+Developer+%F0%9F%92%BB;React+%7C+Node.js+%7C+Java+%7C+Python;Turning+ideas+into+elegant+code+%E2%9C%A8" alt="Typing SVG" />
-</a>
-
-<br/>
-
-<!-- Social & Live Badges -->
-<p>
-  <a href="https://ayushsri.netlify.app" target="_blank">
-    <img src="https://img.shields.io/badge/🌐_LIVE_PORTFOLIO-Visit_Now-00D9FF?style=for-the-badge&labelColor=0A0A0F" alt="Live Portfolio"/>
-  </a>
-  <a href="https://www.linkedin.com/in/ayush-srivastava01" target="_blank">
-    <img src="https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/>
-  </a>
-  <a href="https://github.com/ayushsrivastava-01" target="_blank">
-    <img src="https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
-  </a>
-  <a href="mailto:srivastava999ayush@gmail.com">
-    <img src="https://img.shields.io/badge/Email-Say_Hi-EA4335?style=for-the-badge&logo=gmail&logoColor=white" alt="Email"/>
-  </a>
+<p align="center">
+  A modern full-stack blogging platform built with <strong>Angular</strong> and <strong>ASP.NET Core</strong>.
+  <br />
+  <em>Learning full-stack development, one feature at a time.</em>
 </p>
 
-<!-- Stats Badges -->
-<p>
-  <img src="https://img.shields.io/badge/Status-Open_to_Work-06FFA5?style=flat-square&labelColor=0A0A0F" alt="Open to work"/>
-  <img src="https://img.shields.io/badge/Experience-2%2B_Years-00D9FF?style=flat-square&labelColor=0A0A0F" alt="Experience"/>
-  <img src="https://img.shields.io/badge/Projects-12%2B-7C3AED?style=flat-square&labelColor=0A0A0F" alt="Projects"/>
-  <img src="https://img.shields.io/badge/Certificates-17%2B-06FFA5?style=flat-square&labelColor=0A0A0F" alt="Certificates"/>
+<p align="center">
+  <img src="https://img.shields.io/badge/.NET-10.0-512BD4?style=for-the-badge&logo=dotnet&logoColor=white" alt=".NET 10" />
+  <img src="https://img.shields.io/badge/C%23-Backend-239120?style=for-the-badge&logo=csharp&logoColor=white" alt="C Sharp" />
+  <img src="https://img.shields.io/badge/Angular-Planned-DD0031?style=for-the-badge&logo=angular&logoColor=white" alt="Angular planned" />
+  <img src="https://img.shields.io/badge/Status-In%20Development-orange?style=for-the-badge" alt="In development" />
 </p>
-
-</div>
 
 ---
 
-<br/>
+## 🚀 About the Project
 
-## 🎯 About The Project
+**BlogSphere** is a full-stack blogging application I'm building to strengthen my skills in modern web development.
 
-> A **modern, dark-themed, single-page portfolio** built from scratch with **React, Vite, and Framer Motion** — featuring smooth scroll navigation, an **AI-powered chatbot**, and a **fully functional contact form** that sends automated email replies.
+The project starts with a RESTful API built using ASP.NET Core and will gradually evolve into a complete blogging platform with an Angular frontend, database integration, and authentication.
 
-<br/>
+The focus is on understanding how real-world applications work — from API design and data persistence to frontend integration and deployment.
 
-<div align="center">
-
-### 🏆 What Makes It Special
+## ✨ Features
 
 <table>
   <tr>
-    <td align="center" width="33%">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/artificial-intelligence.png" width="60"/>
-      <br/><br/>
-      <b>🤖 AI Chatbot</b>
-      <br/>
-      <sub>Powered by Google Gemini<br/>Answers visitor questions 24/7</sub>
-      <br/><br/>
+    <td width="50%">
+      <h3>📖 Read Blogs</h3>
+      Retrieve all blog posts or fetch a specific post by its ID.
     </td>
-    <td align="center" width="33%">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/lightning-bolt.png" width="60"/>
-      <br/><br/>
-      <b>⚡ Blazing Fast</b>
-      <br/>
-      <sub>Vite + optimized assets<br/>Lighthouse score: 95+</sub>
-      <br/><br/>
-    </td>
-    <td align="center" width="33%">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/smartphone-tablet.png" width="60"/>
-      <br/><br/>
-      <b>📱 Fully Responsive</b>
-      <br/>
-      <sub>Pixel-perfect on every device<br/>Mobile-first design</sub>
-      <br/><br/>
+    <td width="50%">
+      <h3>✍️ Create Blogs</h3>
+      Add new posts with a title, content, and author.
     </td>
   </tr>
   <tr>
-    <td align="center">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/paint-palette.png" width="60"/>
-      <br/><br/>
-      <b>🎨 Modern UI/UX</b>
-      <br/>
-      <sub>Glassmorphism + gradients<br/>Cyan & purple theme</sub>
-      <br/><br/>
+    <td width="50%">
+      <h3>🛠️ Update Blogs</h3>
+      Edit existing blog post details using the PUT endpoint.
     </td>
-    <td align="center">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/email-open.png" width="60"/>
-      <br/><br/>
-      <b>📬 Working Contact Form</b>
-      <br/>
-      <sub>Netlify Functions + Brevo<br/>Automated replies</sub>
-      <br/><br/>
-    </td>
-    <td align="center">
-      <br/>
-      <img src="https://img.icons8.com/fluency/96/rocket.png" width="60"/>
-      <br/><br/>
-      <b>🚀 Deployed on Netlify</b>
-      <br/>
-      <sub>CI/CD from GitHub<br/>Custom domain ready</sub>
-      <br/><br/>
+    <td width="50%">
+      <h3>🗑️ Delete Blogs</h3>
+      Remove a post using its unique ID.
     </td>
   </tr>
 </table>
 
-</div>
+> More features, including database persistence and the Angular interface, are planned as development continues.
 
-<br/>
+## 🧰 Tech Stack
 
----
+| Technology            | Purpose              | Status  |
+| --------------------- | -------------------- | ------- |
+| C#                    | Backend programming  | In use  |
+| ASP.NET Core Web API  | REST API development | In use  |
+| .NET 10               | Backend framework    | In use  |
+| Postman               | API testing          | In use  |
+| Git & GitHub          | Version control      | In use  |
+| Angular               | Frontend development | Planned |
+| TypeScript            | Frontend programming | Planned |
+| SQL Server            | Database             | Planned |
+| Entity Framework Core | Data access          | Planned |
 
-## 🛠️ Tech Stack
+## 📡 API Reference
 
-<div align="center">
+Base URL: `http://localhost:5269`
 
-### 🎨 Frontend
-<p>
-  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css,bootstrap,tailwind&theme=dark" />
-</p>
+| HTTP Method | Endpoint          | Description       |
+| ----------- | ----------------- | ----------------- |
+| `GET`       | `/api/posts`      | Get all posts     |
+| `GET`       | `/api/posts/{id}` | Get a post by ID  |
+| `POST`      | `/api/posts`      | Create a new post |
+| `PUT`       | `/api/posts/{id}` | Update a post     |
+| `DELETE`    | `/api/posts/{id}` | Delete a post     |
 
-### ⚙️ Backend & Serverless
-<p>
-  <img src="https://skillicons.dev/icons?i=nodejs,express,netlify&theme=dark" />
-  <img src="https://img.shields.io/badge/Google_Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Brevo-0B996E?style=for-the-badge&logo=minutemailer&logoColor=white"/>
-</p>
+### Example Request
 
-### 🧰 Tools & Deployment
-<p>
-  <img src="https://skillicons.dev/icons?i=git,github,vscode,figma,netlify&theme=dark" />
-</p>
+Create a new blog using `POST /api/posts`.
 
-</div>
+```json
+{
+  "title": "Hello, BlogSphere!",
+  "content": "My journey into full-stack development starts here.",
+  "author": "Ayush"
+}
+```
 
-<br/>
+## ⚙️ Run Locally
 
----
+### Prerequisites
 
-## 📁 Project Structure
+* [.NET SDK](https://dotnet.microsoft.com/download)
+* [Visual Studio Code](https://code.visualstudio.com/)
+* [Postman](https://www.postman.com/)
 
-<details open>
-<summary><b>📂 Click to expand full file tree</b></summary>
-
-<br/>
+### Setup
 
 ```bash
-my-portfolio/
-│
-├── 📁 public/
-│   ├── 📁 certificates/           # 17+ certificate PDFs
-│   ├── 📁 images/                 # Project screenshots
-│   ├── 📄 robots.txt
-│   └── 📄 sitemap.xml
-│
-├── 📁 src/
-│   ├── 📁 assets/                 # Images, Lottie JSONs, PDFs
-│   │   ├── 🖼️ ayush.jpg
-│   │   ├── 🎞️ hero.json
-│   │   ├── 🎞️ about.json
-│   │   ├── 🎞️ contact.json
-│   │   ├── 🎞️ success.json
-│   │   ├── 🎞️ resume.json
-│   │   └── 📄 Ayush_Srivastava_Resume.pdf
-│   │
-│   ├── 📁 components/
-│   │   ├── ⚛️ Navbar.jsx
-│   │   ├── ⚛️ Hero.jsx
-│   │   ├── ⚛️ About.jsx
-│   │   ├── ⚛️ Skills.jsx
-│   │   ├── ⚛️ Projects.jsx
-│   │   ├── ⚛️ Experience.jsx
-│   │   ├── ⚛️ Education.jsx
-│   │   ├── ⚛️ Certificate.jsx
-│   │   ├── ⚛️ Contact.jsx
-│   │   ├── ⚛️ Resume.jsx
-│   │   ├── ⚛️ Footer.jsx
-│   │   ├── ⚛️ Chatbot.jsx
-│   │   ├── ⚛️ Analytics.jsx
-│   │   └── 📁 css/
-│   │       ├── 🎨 Navbar.css
-│   │       ├── 🎨 Hero.css
-│   │       ├── 🎨 About.css
-│   │       ├── 🎨 Skills.css
-│   │       ├── 🎨 Project.css
-│   │       ├── 🎨 Experience.css
-│   │       ├── 🎨 Education.css
-│   │       ├── 🎨 Certificate.css
-│   │       ├── 🎨 Contact.css
-│   │       ├── 🎨 Resume.css
-│   │       ├── 🎨 Footer.css
-│   │       └── 🎨 Chatbot.css
-│   │
-│   ├── ⚛️ App.jsx
-│   ├── 🎨 App.css
-│   ├── 🎨 index.css
-│   └── ⚛️ main.jsx
-│
-├── 📁 netlify/
-│   └── 📁 functions/
-│       ├── ⚡ sendMail.js
-│       └── 📚 portfolioKnowledge.js
-│
-├── ⚙️ netlify.toml
-├── 🌐 index.html
-├── 📦 package.json
-├── ⚡ vite.config.js
-└── 📖 README.md
+git clone https://github.com/ayushsrivastava-01/BlogSphere.git
+cd BlogSphere/BlogSphere.API
+dotnet watch run
+```
+
+Use the local URL shown in the terminal to test your API with Postman. The port can vary between environments.
+
+## 🗺️ Roadmap
+
+* [x] Set up ASP.NET Core Web API
+* [x] Create the blog post model
+* [x] Implement GET endpoints
+* [x] Implement POST endpoint
+* [x] Implement PUT endpoint
+* [x] Implement DELETE endpoint
+* [ ] Integrate SQL Server
+* [ ] Add Entity Framework Core
+* [ ] Build a responsive Angular frontend
+* [ ] Connect Angular with the backend API
+* [ ] Add validation and error handling
+* [ ] Implement user authentication
+* [ ] Deploy the full-stack application
+
+## 🎯 Project Goals
+
+* Build a complete full-stack application from scratch.
+* Understand RESTful API design and HTTP methods.
+* Learn database integration and persistence.
+* Practice clean, maintainable code.
+* Gain hands-on experience with Angular and .NET.
+
+## 👨‍💻 Author
+
+<p align="center">
+  <strong>Ayush Srivastava</strong>
+  <br />
+  Aspiring Full-Stack Developer
+  <br /><br />
+  <a href="https://github.com/ayushsrivastava-01">
+    <img src="https://img.shields.io/badge/GitHub-Follow-181717?style=for-the-badge&logo=github" alt="GitHub Profile" />
+  </a>
+</p>
+
+---
+
+<p align="center">
+  ⭐ If you find this project interesting, consider giving it a star!
+  <br />
+  <em>Building today. Improving every day.</em>
+</p>
