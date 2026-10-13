@@ -1,89 +1,216 @@
-
+using System.Security.Claims;
+using System.Text;
+using BlogSphere.API.Data;
+using BlogSphere.API.DTOs;
 using BlogSphere.API.Models;
+using BlogSphere.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+builder.Services.AddDbContext<BlogSphereDbContext>(options =>
+    options.UseMySQL(connectionString!));
+
+builder.Services.AddScoped<AuthService>();
+
+var jwtKey = builder.Configuration["Jwt:Key"]!;
+var jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
+var jwtAudience = builder.Configuration["Jwt:Audience"]!;
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtIssuer,
+            ValidAudience = jwtAudience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AngularClient", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
-var posts = new List<Post>
-{
-    new Post
-    {
-        Id = 1,
-        Title = "My First Blog",
-        Content = "This is my first blog post.",
-        Author = "Ayush"
-    },
-    new Post
-    {
-        Id = 2,
-        Title = "Learning Angular and .NET",
-        Content = "I am building BlogSphere to learn full-stack development.",
-        Author = "Ayush"
-    }
-};
+app.UseCors("AngularClient");
+app.UseAuthentication();
+app.UseAuthorization();
 
-//traditional get method
-app.MapGet("/api/posts", () =>
+static int? GetUserId(ClaimsPrincipal user)
 {
+    var id = user.FindFirstValue(ClaimTypes.NameIdentifier);
+    return int.TryParse(id, out var parsed) ? parsed : null;
+}
+
+// ==================== POSTS ====================
+
+app.MapGet("/api/posts", async (BlogSphereDbContext db) =>
+{
+    var posts = await db.Posts
+        .OrderByDescending(p => p.CreatedAt)
+        .ToListAsync();
     return Results.Ok(posts);
 });
 
-//get by ID
-app.MapGet("/api/posts/{id}", (int id) =>
+app.MapGet("/api/posts/{id}", async (int id, BlogSphereDbContext db) =>
 {
-    var post = posts.FirstOrDefault(p => p.Id == id);
+    var post = await db.Posts.FindAsync(id);
+    return post is null ? Results.NotFound() : Results.Ok(post);
+});
+
+app.MapPost("/api/posts", async (
+    Post newPost,
+    BlogSphereDbContext db,
+    ClaimsPrincipal user) =>
+{
+    var userId = GetUserId(user);
+
+    if (userId is null)
+    {
+        return Results.Unauthorized();
+    }
+
+    newPost.Id = 0;
+    newPost.UserId = userId;
+    newPost.CreatedAt = DateTime.UtcNow;
+
+    db.Posts.Add(newPost);
+    await db.SaveChangesAsync();
+
+    return Results.Created($"/api/posts/{newPost.Id}", newPost);
+})
+.RequireAuthorization();
+
+app.MapPut("/api/posts/{id}", async (
+    int id,
+    Post updatedPost,
+    BlogSphereDbContext db,
+    ClaimsPrincipal user) =>
+{
+    var userId = GetUserId(user);
+
+    if (userId is null)
+    {
+        return Results.Unauthorized();
+    }
+
+    var post = await db.Posts.FindAsync(id);
 
     if (post is null)
     {
         return Results.NotFound();
     }
 
-    return Results.Ok(post);
-}); 
-
-//post ke liye
-app.MapPost("/api/posts", (Post newPost) =>
-{
-    newPost.Id = posts.Count > 0 ? posts.Max(p => p.Id) + 1 : 1;
-    newPost.CreatedAt = DateTime.UtcNow;
-
-    posts.Add(newPost);
-
-    return Results.Created($"/api/posts/{newPost.Id}", newPost);
-});
-
-
-//put method
-app.MapPut("/api/posts/{id}", (int id, Post updatedPost) =>
-{
-    var post = posts.FirstOrDefault(p => p.Id == id);
-
-    if (post is null)
+    if (post.UserId != userId)
     {
-        return Results.NotFound();
+        return Results.Forbid();
     }
 
     post.Title = updatedPost.Title;
     post.Content = updatedPost.Content;
     post.Author = updatedPost.Author;
 
-    return Results.Ok(post);
-});
+    await db.SaveChangesAsync();
 
-//delete method
-app.MapDelete("/api/posts/{id}", (int id) =>
+    return Results.Ok(post);
+})
+.RequireAuthorization();
+
+app.MapDelete("/api/posts/{id}", async (
+    int id,
+    BlogSphereDbContext db,
+    ClaimsPrincipal user) =>
 {
-    var post = posts.FirstOrDefault(p => p.Id == id);
+    var userId = GetUserId(user);
+
+    if (userId is null)
+    {
+        return Results.Unauthorized();
+    }
+
+    var post = await db.Posts.FindAsync(id);
 
     if (post is null)
     {
         return Results.NotFound();
     }
 
-    posts.Remove(post);
+    if (post.UserId != userId)
+    {
+        return Results.Forbid();
+    }
+
+    db.Posts.Remove(post);
+    await db.SaveChangesAsync();
 
     return Results.NoContent();
+})
+.RequireAuthorization();
+
+// ==================== AUTH ====================
+
+app.MapPost("/api/auth/register", async (RegisterDto dto, AuthService auth) =>
+{
+    var result = await auth.RegisterAsync(dto);
+
+    if (!result.Success)
+    {
+        return Results.BadRequest(new { message = result.Message });
+    }
+
+    return Results.Ok(new
+    {
+        message = result.Message,
+        user = new
+        {
+            id = result.User!.Id,
+            name = result.User.Name,
+            email = result.User.Email
+        }
+    });
+});
+
+app.MapPost("/api/auth/login", async (LoginDto dto, AuthService auth) =>
+{
+    var result = await auth.LoginAsync(dto);
+
+    if (!result.Success)
+    {
+        return Results.Unauthorized();
+    }
+
+    return Results.Ok(new
+    {
+        message = result.Message,
+        token = result.Token,
+        user = new
+        {
+            id = result.User!.Id,
+            name = result.User.Name,
+            email = result.User.Email
+        }
+    });
 });
 
 app.Run();

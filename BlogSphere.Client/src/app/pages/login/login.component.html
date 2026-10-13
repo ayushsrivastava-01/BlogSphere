@@ -1,0 +1,58 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="brand-icon-lg">B</div>
+      <h1>Welcome back.</h1>
+      <p>Login to continue your journey.</p>
+    </div>
+
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+      <label for="email">Email</label>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        [(ngModel)]="email"
+        placeholder="you@example.com"
+        required
+        email
+        #emailInput="ngModel"
+      />
+      @if (emailInput.invalid && emailInput.touched) {
+        <p class="field-error">Please enter a valid email.</p>
+      }
+
+      <label for="password">Password</label>
+      <input
+        id="password"
+        name="password"
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Your password"
+        required
+        minlength="6"
+        #passwordInput="ngModel"
+      />
+      @if (passwordInput.invalid && passwordInput.touched) {
+        <p class="field-error">Password must be at least 6 characters.</p>
+      }
+
+      @if (errorMessage) {
+        <div class="auth-error">{{ errorMessage }}</div>
+      }
+
+      <button
+        class="auth-button"
+        type="submit"
+        [disabled]="loginForm.invalid || isSubmitting"
+      >
+        {{ isSubmitting ? 'Logging in...' : 'Login →' }}
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Don't have an account?
+      <a routerLink="/register">Create one</a>
+    </p>
+  </div>
+</div>

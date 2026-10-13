@@ -1,0 +1,422 @@
+<div class="page" id="home">
+  <nav class="navbar">
+    <a class="brand" href="#home" aria-label="BlogSphere home" (click)="scrollToSection($event, 'home')">
+      <span class="brand-icon">B</span>
+      <span>Blog<span class="brand-accent">Sphere</span></span>
+    </a>
+
+    <div class="nav-links">
+      <a class="active" href="#home" (click)="scrollToSection($event, 'home')">Home</a>
+      <a href="#posts" (click)="scrollToSection($event, 'posts')">Explore</a>
+      <a href="#about" (click)="scrollToSection($event, 'about')">About</a>
+    </div>
+
+    <div class="nav-search">
+      <span class="search-icon">⌕</span>
+      <input
+        type="text"
+        placeholder="Search stories..."
+        [(ngModel)]="searchQuery"
+        aria-label="Search blog posts"
+      />
+      @if (searchQuery) {
+        <button
+          type="button"
+          class="clear-search"
+          (click)="clearSearch()"
+          aria-label="Clear search"
+        >
+          ×
+        </button>
+      }
+    </div>
+
+    @if (currentUser) {
+      <div class="user-menu">
+        <div class="user-avatar">
+          {{ currentUser.name.charAt(0).toUpperCase() }}
+        </div>
+        <span class="user-name">{{ currentUser.name }}</span>
+        <button
+          type="button"
+          class="logout-btn"
+          (click)="logout()"
+          title="Logout"
+        >
+          ⏻
+        </button>
+      </div>
+    } @else {
+      <button
+        type="button"
+        class="login-btn"
+        (click)="goToLogin()"
+      >
+        Login
+      </button>
+    }
+
+    @if (currentUser) {
+      <button
+        class="nav-cta"
+        type="button"
+        (click)="toggleCreateForm()"
+      >
+        {{ showCreateForm ? "Close Form" : "Write a Story" }}
+        <span>↗</span>
+      </button>
+    }
+  </nav>
+
+  <header class="hero">
+    <div class="hero-badge">
+      <span class="status-dot"></span>
+      A SPACE FOR EVERY IDEA
+    </div>
+
+    <h1>
+      Words have power.<br />
+      <span>Stories have a soul.</span>
+    </h1>
+
+    <p class="subtitle">
+      Discover fresh perspectives, share what inspires you, and connect with
+      ideas that matter.
+    </p>
+
+    <a class="hero-link" href="#posts" (click)="scrollToSection($event, 'posts')">
+      Discover stories <span>↓</span>
+    </a>
+
+    <div class="hero-decoration decoration-one"></div>
+    <div class="hero-decoration decoration-two"></div>
+  </header>
+
+  <main class="content" id="posts">
+    @if (showCreateForm && currentUser) {
+      <section class="create-form-card" id="create-post">
+        <p class="section-label">YOUR NEXT STORY</p>
+        <h2>Write something <span>meaningful.</span></h2>
+        <p class="form-description">
+          Share an idea, an experience, or something you've learned.
+        </p>
+
+        <form #postForm="ngForm" (ngSubmit)="createPost()">
+          <label for="postTitle">Post title</label>
+          <input
+            id="postTitle"
+            name="title"
+            type="text"
+            [(ngModel)]="newPost.title"
+            placeholder="Give your story a title"
+            required
+            minlength="3"
+            maxlength="150"
+            #titleInput="ngModel"
+          />
+          @if (titleInput.invalid && titleInput.touched) {
+            <p class="field-error">
+              @if (titleInput.errors?.['required']) {
+                Title is required.
+              } @else if (titleInput.errors?.['minlength']) {
+                Title must be at least 3 characters.
+              }
+            </p>
+          }
+          <p class="field-hint">{{ newPost.title.length }}/150</p>
+
+          <label for="postAuthor">Your name</label>
+          <input
+            id="postAuthor"
+            name="author"
+            type="text"
+            [(ngModel)]="newPost.author"
+            placeholder="Enter your name"
+            required
+            minlength="2"
+            maxlength="100"
+            #authorInput="ngModel"
+          />
+          @if (authorInput.invalid && authorInput.touched) {
+            <p class="field-error">
+              @if (authorInput.errors?.['required']) {
+                Author name is required.
+              } @else if (authorInput.errors?.['minlength']) {
+                Name must be at least 2 characters.
+              }
+            </p>
+          }
+
+          <label for="postContent">Your story</label>
+          <textarea
+            id="postContent"
+            name="content"
+            [(ngModel)]="newPost.content"
+            placeholder="Start writing your thoughts..."
+            rows="6"
+            required
+            minlength="10"
+            maxlength="10000"
+            #contentInput="ngModel"
+          ></textarea>
+          @if (contentInput.invalid && contentInput.touched) {
+            <p class="field-error">
+              @if (contentInput.errors?.['required']) {
+                Story content is required.
+              } @else if (contentInput.errors?.['minlength']) {
+                Story must be at least 10 characters.
+              }
+            </p>
+          }
+          <p class="field-hint">{{ newPost.content.length }}/10000</p>
+
+          <button
+            class="publish-button"
+            type="submit"
+            [disabled]="postForm.invalid || isSaving"
+          >
+            {{ isSaving ? "Publishing..." : "Publish Story →" }}
+          </button>
+        </form>
+      </section>
+    }
+
+    @if (successMessage) {
+      <div class="message-card success-card" role="status">
+        <p>{{ successMessage }}</p>
+      </div>
+    }
+
+    <div class="section-heading">
+      <div>
+        <p class="section-label">THE COMMUNITY JOURNAL</p>
+        <h2>Stories worth <span>your time.</span></h2>
+        <p class="section-description">
+          A collection of thoughts, experiences, and ideas from our writers.
+        </p>
+      </div>
+
+      <div class="post-count">
+        <span>{{ filteredPosts.length }}</span>
+        <small>{{ filteredPosts.length === 1 ? "STORY" : "STORIES" }}</small>
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="message-card error-card" role="alert">
+        <h3>Something went wrong</h3>
+        <p>{{ errorMessage }}</p>
+        <p>Check that the .NET API is running, then try again.</p>
+      </div>
+    }
+
+    @if (!errorMessage && posts.length === 0) {
+      <div class="message-card">
+        <div class="empty-icon">✦</div>
+        <h3>Your reading journey starts here.</h3>
+        <p>No posts yet. Check back when the community has shared a story.</p>
+      </div>
+    } @else if (filteredPosts.length === 0 && searchQuery) {
+      <div class="message-card">
+        <div class="empty-icon">⌕</div>
+        <h3>No stories found.</h3>
+        <p>Try a different keyword or clear the search.</p>
+      </div>
+    } @else if (filteredPosts.length > 0) {
+      <div class="post-grid">
+        @for (post of filteredPosts; track post.id; let i = $index) {
+          <article class="post-card">
+            <div class="card-topline">
+              <span class="category-tag">
+                <span class="tag-dot"></span>
+                COMMUNITY STORY
+              </span>
+
+              <span class="post-number">
+                {{ (i + 1).toString().padStart(2, "0") }}
+              </span>
+            </div>
+
+            <div class="card-body">
+              <h3>{{ post.title }}</h3>
+              <p class="post-content">{{ post.content }}</p>
+            </div>
+
+            <div class="card-footer">
+              <div class="author-avatar">
+                {{ post.author.charAt(0).toUpperCase() }}
+              </div>
+
+              <div class="author-info">
+                <span class="author-name">{{ post.author }}</span>
+                <span class="author-label">CONTRIBUTOR</span>
+              </div>
+            </div>
+
+            <div class="post-actions">
+              <a
+                class="read-story-link"
+                [routerLink]="['/blog', post.id]"
+              >
+                Read story <span aria-hidden="true">↗</span>
+              </a>
+
+              @if (currentUser && post.userId === currentUser.id) {
+                <div class="post-management-actions">
+                  <button
+                    type="button"
+                    class="edit-button"
+                    (click)="startEdit(post)"
+                    [attr.aria-label]="'Edit ' + post.title"
+                  >
+                    <span aria-hidden="true">✎</span> Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    class="delete-button"
+                    (click)="deletePost(post)"
+                    [disabled]="deletingPostId === post.id"
+                    [attr.aria-label]="'Delete ' + post.title"
+                  >
+                    <span aria-hidden="true">×</span>
+                    {{ deletingPostId === post.id ? "Deleting..." : "Delete" }}
+                  </button>
+                </div>
+              }
+            </div>
+
+            @if (editingPostId === post.id) {
+              <div class="edit-form">
+                <h4>Edit your story</h4>
+
+                <form
+                  #editForm="ngForm"
+                  (ngSubmit)="saveEdit(post.id)"
+                >
+                  <label [for]="'editTitle' + post.id">Title</label>
+                  <input
+                    [id]="'editTitle' + post.id"
+                    name="editTitle"
+                    type="text"
+                    [(ngModel)]="editPostForm.title"
+                    required
+                    minlength="3"
+                    maxlength="150"
+                    #editTitleInput="ngModel"
+                  />
+                  @if (editTitleInput.invalid && editTitleInput.touched) {
+                    <p class="field-error">
+                      @if (editTitleInput.errors?.['required']) {
+                        Title is required.
+                      } @else if (editTitleInput.errors?.['minlength']) {
+                        Title must be at least 3 characters.
+                      }
+                    </p>
+                  }
+
+                  <label [for]="'editAuthor' + post.id">Author</label>
+                  <input
+                    [id]="'editAuthor' + post.id"
+                    name="editAuthor"
+                    type="text"
+                    [(ngModel)]="editPostForm.author"
+                    required
+                    minlength="2"
+                    maxlength="100"
+                    #editAuthorInput="ngModel"
+                  />
+                  @if (editAuthorInput.invalid && editAuthorInput.touched) {
+                    <p class="field-error">
+                      @if (editAuthorInput.errors?.['required']) {
+                        Author name is required.
+                      } @else if (editAuthorInput.errors?.['minlength']) {
+                        Name must be at least 2 characters.
+                      }
+                    </p>
+                  }
+
+                  <label [for]="'editContent' + post.id">Story</label>
+                  <textarea
+                    [id]="'editContent' + post.id"
+                    name="editContent"
+                    [(ngModel)]="editPostForm.content"
+                    rows="5"
+                    required
+                    minlength="10"
+                    maxlength="10000"
+                    #editContentInput="ngModel"
+                  ></textarea>
+                  @if (editContentInput.invalid && editContentInput.touched) {
+                    <p class="field-error">
+                      @if (editContentInput.errors?.['required']) {
+                        Story content is required.
+                      } @else if (editContentInput.errors?.['minlength']) {
+                        Story must be at least 10 characters.
+                      }
+                    </p>
+                  }
+
+                  <div class="edit-form-actions">
+                    <button
+                      class="publish-button"
+                      type="submit"
+                      [disabled]="editForm.invalid || isUpdating"
+                    >
+                      {{ isUpdating ? "Saving..." : "Save Changes" }}
+                    </button>
+
+                    <button
+                      class="cancel-button"
+                      type="button"
+                      (click)="cancelEdit()"
+                      [disabled]="isUpdating"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            }
+          </article>
+        }
+      </div>
+    }
+  </main>
+
+  <section class="about-section" id="about">
+    <div class="about-mark">B.</div>
+
+    <div>
+      <p class="section-label">A LITTLE ABOUT US</p>
+      <h2>Every voice has a story.</h2>
+      <p>
+        BlogSphere is a place to express ideas, learn from others, and turn
+        everyday thoughts into meaningful stories.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <a class="brand footer-brand" href="#home" (click)="scrollToSection($event, 'home')">
+      <span class="brand-icon">B</span>
+      <span>Blog<span class="brand-accent">Sphere</span></span>
+    </a>
+
+    <p>Built for curious minds. © 2026 BlogSphere.</p>
+
+    <a href="#home" class="back-top" (click)="scrollToSection($event, 'home')">Back to top ↑</a>
+  </footer>
+
+  @if (showBackToTop) {
+    <button
+      type="button"
+      class="floating-back-to-top"
+      (click)="scrollToTop()"
+      aria-label="Back to top"
+      title="Back to top"
+    >
+      <span aria-hidden="true">↑</span>
+    </button>
+  }
+</div>

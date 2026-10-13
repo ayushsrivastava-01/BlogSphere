@@ -1,0 +1,74 @@
+
+<div class="details-page">
+  <nav class="details-navbar">
+    <a class="brand" routerLink="/">
+      <span class="brand-icon">B</span>
+      <span>Blog<span class="brand-accent">Sphere</span></span>
+    </a>
+
+    <a class="back-link" routerLink="/">
+      <span>←</span> Back to stories
+    </a>
+  </nav>
+
+  <main class="details-container">
+    @if (isLoading) {
+      <section class="state-card">
+        <div class="loading-spinner"></div>
+        <p>Loading your story...</p>
+      </section>
+    } @else if (errorMessage) {
+      <section class="state-card error-state">
+        <div class="state-icon">!</div>
+        <h1>Story unavailable</h1>
+        <p>{{ errorMessage }}</p>
+        <a class="home-button" routerLink="/">Return to homepage</a>
+      </section>
+    } @else if (post) {
+      <article class="story">
+        <div class="story-label">
+          <span class="status-dot"></span>
+          COMMUNITY STORY
+        </div>
+
+        <h1>{{ post.title }}</h1>
+
+        <div class="story-meta">
+          <div class="author-avatar">
+            {{ post.author.charAt(0).toUpperCase() }}
+          </div>
+
+          <div class="author-info">
+            <span class="author-name">{{ post.author }}</span>
+            <span class="author-label">CONTRIBUTOR</span>
+          </div>
+
+          <span class="meta-divider"></span>
+
+          <div class="publish-date">
+            <span class="date-label">PUBLISHED</span>
+            <span>{{ post.createdAt | date:'dd MMM yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="story-divider"></div>
+
+        <div class="story-content">{{ post.content }}</div>
+
+        <div class="story-end">
+          <span></span>
+          <span class="end-mark">B.</span>
+          <span></span>
+        </div>
+
+        <a class="home-button" routerLink="/">
+          ← Explore more stories
+        </a>
+      </article>
+    }
+  </main>
+
+  <footer class="details-footer">
+    Built for curious minds. © 2026 BlogSphere.
+  </footer>
+</div>

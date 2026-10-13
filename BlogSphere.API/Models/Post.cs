@@ -11,5 +11,8 @@ public class Post
     public string Author { get; set; } = string.Empty;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-}
 
+    public int? UserId { get; set; }
+
+    public User? User { get; set; }
+}
