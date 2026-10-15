@@ -23,7 +23,7 @@ export class BlogDetailsComponent implements OnInit {
   isLoading = true;
   errorMessage = '';
 
-  private apiUrl = 'http://localhost:5269/api/posts';
+  private apiUrl = 'https://blogsphere-api-vhq2.onrender.com/api/posts';
 
   constructor(
     private http: HttpClient,

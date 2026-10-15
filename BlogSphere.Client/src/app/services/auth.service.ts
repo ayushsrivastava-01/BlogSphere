@@ -18,7 +18,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:5269/api/auth';
+  private apiUrl = 'https://blogsphere-api-vhq2.onrender.com/api/auth';
   private tokenKey = 'blogsphere_token';
   private userKey = 'blogsphere_user';
 
