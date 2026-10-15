@@ -1,74 +1,69 @@
-
-<div class="details-page">
-  <nav class="details-navbar">
+<div class="page">
+  <nav class="navbar">
     <a class="brand" routerLink="/">
       <span class="brand-icon">B</span>
       <span>Blog<span class="brand-accent">Sphere</span></span>
     </a>
 
-    <a class="back-link" routerLink="/">
+    <a class="back-btn" routerLink="/">
       <span>←</span> Back to stories
     </a>
   </nav>
 
-  <main class="details-container">
+  <main class="article-container">
     @if (isLoading) {
-      <section class="state-card">
-        <div class="loading-spinner"></div>
+      <section class="loading-card">
         <p>Loading your story...</p>
       </section>
     } @else if (errorMessage) {
-      <section class="state-card error-state">
-        <div class="state-icon">!</div>
-        <h1>Story unavailable</h1>
+      <section class="error-card">
+        <h2>Story unavailable</h2>
         <p>{{ errorMessage }}</p>
-        <a class="home-button" routerLink="/">Return to homepage</a>
+        <button type="button" routerLink="/">Return to homepage</button>
       </section>
     } @else if (post) {
-      <article class="story">
-        <div class="story-label">
-          <span class="status-dot"></span>
-          COMMUNITY STORY
-        </div>
-
-        <h1>{{ post.title }}</h1>
-
-        <div class="story-meta">
-          <div class="author-avatar">
-            {{ post.author.charAt(0).toUpperCase() }}
+      <article>
+        <header class="article-header">
+          <div class="article-category">
+            <span class="status-dot"></span>
+            COMMUNITY STORY
           </div>
 
-          <div class="author-info">
-            <span class="author-name">{{ post.author }}</span>
-            <span class="author-label">CONTRIBUTOR</span>
-          </div>
+          <h1 class="article-title">{{ post.title }}</h1>
 
-          <span class="meta-divider"></span>
+          <div class="article-meta">
+            <div class="author-avatar-lg">
+              {{ post.author.charAt(0).toUpperCase() }}
+            </div>
 
-          <div class="publish-date">
-            <span class="date-label">PUBLISHED</span>
-            <span>{{ post.createdAt | date:'dd MMM yyyy' }}</span>
+            <div>
+              <div class="author-name-lg">{{ post.author }}</div>
+              <div class="article-date">CONTRIBUTOR</div>
+            </div>
+
+            <span>·</span>
+
+            <div>
+              <div class="article-date">PUBLISHED</div>
+              <div class="author-name-lg">
+                {{ post.createdAt | date:'dd MMM yyyy' }}
+              </div>
+            </div>
           </div>
+        </header>
+
+        <div class="article-content">{{ post.content }}</div>
+
+        <div style="text-align: center; margin: 60px 0;">
+          <span style="font-family: 'Playfair Display', serif; font-size: 40px; color: #b8541c;">B.</span>
         </div>
 
-        <div class="story-divider"></div>
-
-        <div class="story-content">{{ post.content }}</div>
-
-        <div class="story-end">
-          <span></span>
-          <span class="end-mark">B.</span>
-          <span></span>
+        <div style="text-align: center;">
+          <a class="back-btn" routerLink="/" style="display: inline-flex;">
+            ← Explore more stories
+          </a>
         </div>
-
-        <a class="home-button" routerLink="/">
-          ← Explore more stories
-        </a>
       </article>
     }
   </main>
-
-  <footer class="details-footer">
-    Built for curious minds. © 2026 BlogSphere.
-  </footer>
 </div>
