@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 var builder = WebApplication.CreateBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+Console.WriteLine(">>> DB: [" + connectionString + "]");   // ← ye add kar
 
 builder.Services.AddDbContext<BlogSphereDbContext>(options =>
     options.UseMySQL(connectionString!));
