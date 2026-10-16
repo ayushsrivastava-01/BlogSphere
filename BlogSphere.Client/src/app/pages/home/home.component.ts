@@ -37,6 +37,9 @@ export class HomeComponent implements OnInit {
 
   searchQuery = '';
 
+  // Mobile menu
+  mobileMenuOpen = false;
+
   private apiUrl = 'https://blogsphere-api-vhq2.onrender.com/api/posts';
 
   newPost = {
@@ -109,6 +112,8 @@ export class HomeComponent implements OnInit {
       behavior: 'smooth',
       block: 'start'
     });
+
+    this.closeMobileMenu();
   }
 
   toggleCreateForm(): void {
@@ -128,6 +133,15 @@ export class HomeComponent implements OnInit {
         });
       });
     }
+  }
+
+  // Mobile menu
+  toggleMobileMenu(): void {
+    this.mobileMenuOpen = !this.mobileMenuOpen;
+  }
+
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
   }
 
   goToLogin(): void {
